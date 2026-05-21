@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: resume-screener
+    # Runs the container using your local user context to prevent folder permission locks
+    user: "${UID:-1000}:${GID:-1000}" 
+    ports:
+      - "5000:5000"
+    volumes:
+      - .:/app
+      - ./models:/app/models          # Persist trained models
+      - ./artifacts:/app/artifacts    # Persist artifacts
+      - ./logs:/app/logs              # Persist logs
+    environment:
+      - FLASK_ENV=development
+      - PORT=5000
+      - PYTHONPATH=/app
+      - SECRET_KEY=${SECRET_KEY:-dev-key-change-me}
+      - TRAIN_API_KEY=${TRAIN_API_KEY:-train-secret}
+    env_file:
+      - .env
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s

@@ -1,0 +1,89 @@
+[
+  {
+    "job_id": "J001",
+    "title": "Machine Learning Engineer",
+    "company": "TechCorp AI",
+    "location": "Bangalore, India",
+    "required_skills": [
+      "python",
+      "machine learning",
+      "deep learning",
+      "tensorflow",
+      "pytorch",
+      "scikit-learn",
+      "aws",
+      "docker",
+      "nlp"
+    ],
+    "description": "We are looking for an ML Engineer to build and deploy ML models. Strong knowledge of Python, TensorFlow, PyTorch, and Scikit-learn required. Experience with AWS, Docker, and Kubernetes is a plus. Must have experience in NLP and computer vision."
+  },
+  {
+    "job_id": "J002",
+    "title": "Data Scientist",
+    "company": "Analytics Inc.",
+    "location": "Mumbai, India",
+    "required_skills": [
+      "python",
+      "r",
+      "sql",
+      "pandas",
+      "numpy",
+      "matplotlib",
+      "power bi",
+      "machine learning"
+    ],
+    "description": "Seeking a Data Scientist with strong analytical skills. Proficiency in Python, R, SQL required. Experience with Pandas, NumPy, Matplotlib, and Power BI preferred. Must be familiar with statistical modeling and A/B testing."
+  },
+  {
+    "job_id": "J003",
+    "title": "Full Stack Developer",
+    "company": "StartupXYZ",
+    "location": "Remote",
+    "required_skills": [
+      "javascript",
+      "react",
+      "nodejs",
+      "mongodb",
+      "docker",
+      "git",
+      "aws",
+      "typescript"
+    ],
+    "description": "Full Stack Developer with React, Node.js, and MongoDB skills. Experience with Docker, Git, REST APIs required. AWS deployment experience is a plus."
+  },
+  {
+    "job_id": "J004",
+    "title": "DevOps Engineer",
+    "company": "CloudBase",
+    "location": "Hyderabad, India",
+    "required_skills": [
+      "aws",
+      "docker",
+      "kubernetes",
+      "terraform",
+      "jenkins",
+      "bash",
+      "python",
+      "git",
+      "ansible"
+    ],
+    "description": "Looking for DevOps Engineer with strong cloud skills. Must know AWS, Docker, Kubernetes, Terraform, Jenkins. Experience with CI/CD pipelines and monitoring tools required."
+  },
+  {
+    "job_id": "J005",
+    "title": "Backend Python Developer",
+    "company": "WebServices Co.",
+    "location": "Pune, India",
+    "required_skills": [
+      "python",
+      "django",
+      "fastapi",
+      "postgresql",
+      "redis",
+      "docker",
+      "git",
+      "aws"
+    ],
+    "description": "Backend Python Developer for Django/FastAPI applications. Must know PostgreSQL, Redis, Docker. Experience with REST APIs, Celery, and AWS deployment preferred."
+  }
+]

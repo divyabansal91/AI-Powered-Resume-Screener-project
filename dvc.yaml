@@ -1,0 +1,44 @@
+stages:
+  data_ingestion:
+    cmd: python -c "from src.components.data_ingestion import DataIngestion; DataIngestion().initiate_data_ingestion()"
+    deps:
+      - src/components/data_ingestion.py
+      - dataset/raw/
+    outs:
+      - artifacts/raw/
+    params:
+      - params.yaml:
+
+  data_preprocessing:
+    cmd: python -c "
+      from src.components.data_ingestion import DataIngestion;
+      from src.components.data_preprocessing import DataPreprocessor;
+      import json;
+      jobs = DataIngestion().initiate_data_ingestion();
+      processed = DataPreprocessor().preprocess_jobs_batch(jobs);
+      json.dump(processed, open('artifacts/processed/jobs.json','w'), indent=2)
+      "
+    deps:
+      - src/components/data_preprocessing.py
+      - artifacts/raw/
+    outs:
+      - artifacts/processed/
+
+  model_training:
+    cmd: python -c "from src.pipeline.training_pipeline import TrainingPipeline; TrainingPipeline().run()"
+    deps:
+      - src/pipeline/training_pipeline.py
+      - src/components/model_trainer.py
+      - src/components/feature_engineering.py
+      - artifacts/processed/
+    outs:
+      - models/
+    metrics:
+      - artifacts/reports/training_report.json:
+          cache: false
+    params:
+      - params.yaml:
+          - feature_engineering.max_features
+          - feature_engineering.ngram_range
+          - job_matcher.similarity_weight
+          - job_matcher.skill_weight

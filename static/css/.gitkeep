@@ -1,0 +1,117 @@
+/* ── DOM References ── */
+const dropZone   = document.getElementById('dropZone');
+const fileInput  = document.getElementById('fileInput');
+const filePreview  = document.getElementById('filePreview');
+const fileNameEl = document.getElementById('fileName');
+const analyzeBtn = document.getElementById('analyzeBtn');
+const loadingSection = document.getElementById('loadingSection');
+const errorSection   = document.getElementById('errorSection');
+
+let selectedFile = null;
+
+/* ── File Selection ── */
+fileInput?.addEventListener('change', (e) => {
+  const file = e.target.files[0];
+  if (file) handleFileSelect(file);
+});
+
+dropZone?.addEventListener('click', () => fileInput?.click());
+
+dropZone?.addEventListener('dragover', (e) => {
+  e.preventDefault();
+  dropZone.classList.add('dragover');
+});
+
+dropZone?.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
+
+dropZone?.addEventListener('drop', (e) => {
+  e.preventDefault();
+  dropZone.classList.remove('dragover');
+  const file = e.dataTransfer.files[0];
+  if (file) handleFileSelect(file);
+});
+
+function handleFileSelect(file) {
+  const allowed = ['application/pdf', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'text/plain'];
+  const ext = file.name.split('.').pop().toLowerCase();
+  const allowedExts = ['pdf', 'docx', 'doc', 'txt'];
+
+  if (!allowedExts.includes(ext)) {
+    showError('Unsupported file type. Please upload PDF, DOCX, DOC, or TXT.');
+    return;
+  }
+
+  if (file.size > 10 * 1024 * 1024) {
+    showError('File is too large. Maximum size is 10MB.');
+    return;
+  }
+
+  selectedFile = file;
+  fileNameEl.textContent = `${file.name} (${formatBytes(file.size)})`;
+  filePreview?.classList.remove('hidden');
+  analyzeBtn.disabled = false;
+  hideError();
+}
+
+function clearFile() {
+  selectedFile = null;
+  fileInput.value = '';
+  filePreview?.classList.add('hidden');
+  analyzeBtn.disabled = true;
+}
+
+/* ── Upload & Analyze ── */
+async function analyzeResume() {
+  if (!selectedFile) return;
+
+  showLoading(true);
+  hideError();
+
+  const formData = new FormData();
+  formData.append('resume', selectedFile);
+
+  try {
+    const response = await fetch('/predict', {
+      method: 'POST',
+      body: formData,
+    });
+
+    const result = await response.json();
+
+    if (!response.ok || !result.success) {
+      throw new Error(result.error || 'Analysis failed. Please try again.');
+    }
+
+    // Store result and navigate to results page
+    sessionStorage.setItem('resumeResult', JSON.stringify(result.data));
+    window.location.href = '/result';
+
+  } catch (err) {
+    showError(err.message);
+  } finally {
+    showLoading(false);
+  }
+}
+
+/* ── Helpers ── */
+function showLoading(show) {
+  loadingSection?.classList.toggle('hidden', !show);
+  if (analyzeBtn) analyzeBtn.disabled = show;
+}
+
+function showError(msg) {
+  if (errorSection) {
+    errorSection.textContent = `⚠️ ${msg}`;
+    errorSection.classList.remove('hidden');
+  }
+}
+
+function hideError() {
+  errorSection?.classList.add('hidden');
+}
+
+function formatBytes(bytes) {
+  if (bytes < 1024) return bytes + ' B';
+  if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+  return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+}

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Upload Resume - AI Resume Screener</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="nav-brand">🤖 ResumeAI</div>
+  <div class="nav-links">
+    <a href="/">Home</a>
+    <a href="/upload">Upload</a>
+  </div>
+</nav>
+
+<main>
+  <div class="upload-container">
+    <h1>Upload Your Resume</h1>
+    <p style="text-align: center; color: #666; margin-bottom: 2rem;">
+      Supported formats: PDF, DOCX, DOC, TXT (Max 10MB)
+    </p>
+
+    <form id="uploadForm" enctype="multipart/form-data">
+      <div class="upload-zone" id="uploadZone">
+        <div style="font-size: 2rem; margin-bottom: 1rem;">📄</div>
+        <p>
+          Drag and drop your resume here or
+          <label class="file-input-label">
+            browse files
+            <input type="file" id="fileInput" name="resume" accept=".pdf,.docx,.doc,.txt" required />
+          </label>
+        </p>
+      </div>
+
+      <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1.5rem;">
+        Analyze Resume
+      </button>
+    </form>
+
+    <div id="loadingSpinner" style="display: none; text-align: center; margin-top: 2rem;">
+      <p>Analyzing resume...</p>
+      <div style="font-size: 2rem;">⏳</div>
+    </div>
+
+    <div id="errorMessage" style="display: none; background: #fee; color: #c00; padding: 1rem; border-radius: 5px; margin-top: 1rem;"></div>
+  </div>
+</main>
+
+<footer>
+  <p>Built with 🐍 Python · Flask · Scikit-Learn · NLP</p>
+</footer>
+
+<script>
+  const uploadZone = document.getElementById('uploadZone');
+  const fileInput = document.getElementById('fileInput');
+  const uploadForm = document.getElementById('uploadForm');
+  const loadingSpinner = document.getElementById('loadingSpinner');
+  const errorMessage = document.getElementById('errorMessage');
+
+  // Drag and drop
+  uploadZone.addEventListener('click', () => fileInput.click());
+  uploadZone.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    uploadZone.style.background = '#e0e0ff';
+  });
+  uploadZone.addEventListener('dragleave', () => {
+    uploadZone.style.background = '';
+  });
+  uploadZone.addEventListener('drop', (e) => {
+    e.preventDefault();
+    uploadZone.style.background = '';
+    fileInput.files = e.dataTransfer.files;
+  });
+
+  // Form submission
+  uploadForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const file = fileInput.files[0];
+    if (!file) return;
+
+    loadingSpinner.style.display = 'block';
+    errorMessage.style.display = 'none';
+
+    const formData = new FormData();
+    formData.append('resume', file);
+
+    try {
+      const response = await fetch('/predict', {
+        method: 'POST',
+        body: formData
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        // Store results and redirect
+        sessionStorage.setItem('results', JSON.stringify(data.data));
+        window.location.href = '/result';
+      } else {
+        throw new Error(data.error || 'Unknown error');
+      }
+    } catch (error) {
+      errorMessage.textContent = '❌ Error: ' + error.message;
+      errorMessage.style.display = 'block';
+      loadingSpinner.style.display = 'none';
+    }
+  });
+</script>
+
+</body>
+</html>

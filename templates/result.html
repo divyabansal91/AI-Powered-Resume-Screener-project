@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Results - AI Resume Screener</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="nav-brand">🤖 ResumeAI</div>
+  <div class="nav-links">
+    <a href="/">Home</a>
+    <a href="/upload">Upload</a>
+  </div>
+</nav>
+
+<main>
+  <div class="results-container">
+    <h1 style="color: #667eea; margin-bottom: 2rem; text-align: center;">🎯 Top Matching Jobs</h1>
+
+    <div id="resultsContent" style="display: none;">
+      <div id="matchedJobs"></div>
+      
+      <div style="margin-top: 2rem; padding: 1.5rem; background: #f0f0f0; border-radius: 8px;">
+        <h2 style="color: #667eea; margin-bottom: 1rem;">📊 Your Skills</h2>
+        <div id="skillsAnalysis"></div>
+      </div>
+
+      <div style="text-align: center; margin-top: 2rem;">
+        <a href="/upload" class="btn btn-primary">Try Another Resume</a>
+      </div>
+    </div>
+
+    <div id="loadingMessage" style="text-align: center; margin: 3rem 0;">
+      <div style="font-size: 2rem; margin-bottom: 1rem;">⏳</div>
+      <p>Loading results...</p>
+    </div>
+
+    <div id="errorMessage" style="display: none; background: #fee; color: #c00; padding: 1rem; border-radius: 5px;">
+      No results found. <a href="/upload">Upload a resume</a>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <p>Built with 🐍 Python · Flask · Scikit-Learn · NLP</p>
+</footer>
+
+<script>
+  // Get results from session storage
+  const resultsJSON = sessionStorage.getItem('results');
+  
+  if (resultsJSON) {
+    try {
+      const results = JSON.parse(resultsJSON);
+      displayResults(results);
+      document.getElementById('loadingMessage').style.display = 'none';
+      document.getElementById('resultsContent').style.display = 'block';
+    } catch (e) {
+      showError();
+    }
+  } else {
+    showError();
+  }
+
+  function displayResults(data) {
+    const matchedJobs = document.getElementById('matchedJobs');
+    const skillsAnalysis = document.getElementById('skillsAnalysis');
+
+    // Display top matched jobs
+    if (data.top_matches && data.top_matches.length > 0) {
+      matchedJobs.innerHTML = data.top_matches.map((job, idx) => `
+        <div class="job-match">
+          <h3>#${idx + 1} ${job.title}</h3>
+          <p><strong>${job.company}</strong> • ${job.location}</p>
+          <span class="match-score">Match: ${(job.score * 100).toFixed(1)}%</span>
+          <div class="skills-list">
+            ${job.matched_skills.length > 0 ? `<div class="matched-skills"><strong>✓ Matched:</strong> ${job.matched_skills.join(', ')}</div>` : ''}
+            ${job.missing_skills.length > 0 ? `<div class="missing-skills"><strong>✗ Missing:</strong> ${job.missing_skills.join(', ')}</div>` : ''}
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // Display skills found
+    if (data.resume_skills) {
+      const skillCategories = Object.entries(data.resume_skills).map(([cat, skills]) => `
+        <div style="margin-bottom: 1rem;">
+          <strong>${cat.replace(/_/g, ' ')}:</strong>
+          <div style="margin-top: 0.5rem; color: #667eea;">
+            ${skills.join(', ')}
+          </div>
+        </div>
+      `).join('');
+      skillsAnalysis.innerHTML = skillCategories || '<p>No skills detected</p>';
+    }
+  }
+
+  function showError() {
+    document.getElementById('loadingMessage').style.display = 'none';
+    document.getElementById('errorMessage').style.display = 'block';
+  }
+</script>
+
+</body>
+</html>

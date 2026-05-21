@@ -1,0 +1,13 @@
+{
+  "k_values": [
+    1,
+    3,
+    5
+  ],
+  "metrics": {
+    "top_k_coverage": 5,
+    "note": "No labelled test data provided."
+  },
+  "num_jobs": 5,
+  "status": "evaluated"
+}

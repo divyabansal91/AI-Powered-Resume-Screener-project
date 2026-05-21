@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Resume Screener</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="nav-brand">🤖 ResumeAI</div>
+  <div class="nav-links">
+    <a href="/">Home</a>
+    <a href="/upload">Upload</a>
+  </div>
+</nav>
+
+<main>
+  <section class="hero">
+    <div class="hero-content">
+      <h1>AI-Powered Resume Screening</h1>
+      <p>Upload your resume and instantly find the best-matching jobs with skill gap analysis.</p>
+      <a href="/upload" class="btn btn-primary">Get Started →</a>
+    </div>
+    <div class="hero-visual">
+      <div class="floating-card">
+        <span class="emoji">📄</span>
+        <span>Resume Parsing</span>
+      </div>
+      <div class="floating-card">
+        <span class="emoji">🔍</span>
+        <span>Skill Extraction</span>
+      </div>
+      <div class="floating-card">
+        <span class="emoji">🎯</span>
+        <span>Job Matching</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="features">
+    <h2>What We Do</h2>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <div class="feature-icon">📄</div>
+        <h3>Smart Parsing</h3>
+        <p>Extracts name, email, skills, education from PDF or DOCX resumes.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🧠</div>
+        <h3>Skill Analysis</h3>
+        <p>Identifies 200+ technical and soft skills across all domains.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🎯</div>
+        <h3>Job Matching</h3>
+        <p>Ranks jobs by text similarity and skill overlap score.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📈</div>
+        <h3>Gap Analysis</h3>
+        <p>Shows which skills to learn to boost your match score.</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <p>Built with 🐍 Python · Flask · Scikit-Learn · NLP</p>
+</footer>
+
+</body>
+</html>

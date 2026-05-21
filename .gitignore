@@ -1,0 +1,64 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Logs
+logs/
+*.log
+
+# Environment
+.env
+
+# Models (large files — use DVC)
+models/**/*.pkl
+models/**/*.h5
+models/**/*.pt
+models/**/*.pth
+
+# Artifacts
+artifacts/raw/*
+artifacts/processed/*
+!artifacts/raw/.gitkeep
+!artifacts/processed/.gitkeep
+!artifacts/reports/.gitkeep
+
+# Dataset
+dataset/raw/*.pdf
+dataset/raw/*.docx
+dataset/processed/*
+!dataset/raw/.gitkeep
+!dataset/processed/.gitkeep
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# Testing
+.coverage
+htmlcov/
+.pytest_cache/
+
+# Docker
+*.dockerignore
