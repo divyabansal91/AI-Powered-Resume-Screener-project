@@ -1,0 +1,30 @@
+﻿JOHN DOE
+Software Developer
+john.doe@email.com | (555) 123-4567 | github.com/johndoe
+
+PROFESSIONAL SUMMARY
+Experienced software developer with expertise in Python, Flask, and JavaScript. 
+Skilled in building web applications and scalable backend services.
+
+TECHNICAL SKILLS
+- Python: Advanced proficiency in Python programming, data processing, and automation
+- Flask: Expert in Flask web framework, REST APIs, and web application development
+- JavaScript: Strong JavaScript skills for frontend development and interactive web applications
+- SQL and Databases: MySQL, PostgreSQL experience
+- Web Development: HTML, CSS, responsive design
+- Version Control: Git and GitHub
+
+PROFESSIONAL EXPERIENCE
+Senior Developer | Tech Company (2020-Present)
+- Developed REST APIs using Flask and Python
+- Built interactive web applications with JavaScript and HTML/CSS
+- Implemented database solutions with PostgreSQL
+- Led code reviews and mentored junior developers
+
+Junior Developer | StartUp Inc (2018-2020)
+- Created web applications using Flask and Python
+- Developed frontend features with JavaScript
+- Maintained and optimized database queries
+
+EDUCATION
+B.S. in Computer Science | State University (2018)
